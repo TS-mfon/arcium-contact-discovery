@@ -3,20 +3,133 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Arcium Private Contact Discovery</title>
+    <meta
+      name="description"
+      content="Private contact discovery interface for Arcium encrypted matching."
+    />
+    <title>Arcium Contact Discovery</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./main.js"></script>
   </head>
   <body>
     <main class="shell">
-      <section class="hero">
-        <p class="eyebrow">Arcium RTG Developer Submission</p>
-        <h1>Find friends without uploading your address book</h1>
-        <p class="lede">Contacts are normalized locally, hashed, encrypted, and compared through Arcium private set intersection. Only matches are revealed to the requester.</p>
+      <section class="masthead" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Arcium Private Set Intersection</p>
+          <h1 id="page-title">Contact discovery without address book exposure</h1>
+        </div>
+        <p class="lede">
+          Normalize identifiers in the browser, hash them locally, and compare
+          only hashed sets before encrypted on-chain computation is wired in.
+        </p>
       </section>
-      <section class="grid">
-        <article><h2>Local First</h2><p>Raw identifiers never leave the browser in plaintext.</p></article>
-        <article><h2>Private Matching</h2><p>Arcium compares encrypted batches against registered users.</p></article>
-        <article><h2>Minimal Reveal</h2><p>The app receives matches only, while non-matches remain hidden.</p></article>
+
+      <section class="workspace" aria-label="Contact discovery workspace">
+        <form class="panel input-panel" id="contact-form">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Input</p>
+              <h2>Your contacts</h2>
+            </div>
+            <button class="ghost-button" type="button" id="clear-button">
+              Clear
+            </button>
+          </div>
+
+          <label for="contact-input">Contacts to check</label>
+          <textarea
+            id="contact-input"
+            name="contacts"
+            rows="9"
+            spellcheck="false"
+            placeholder="alice@example.com&#10;+1 (415) 555-0132&#10;@sol_builder"
+          ></textarea>
+          <p class="hint">
+            Enter one email, phone number, handle, or wallet alias per line.
+            Processing stays in this browser session.
+          </p>
+
+          <label for="registry-input">Known registered hashes</label>
+          <textarea
+            id="registry-input"
+            name="registry"
+            rows="5"
+            spellcheck="false"
+            placeholder="Paste SHA-256 hashes, one per line, to check local matches."
+          ></textarea>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-button">Process contacts</button>
+            <span id="form-status" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+
+        <aside class="panel verified-panel" aria-labelledby="deployment-title">
+          <div class="state-row">
+            <div>
+              <p class="section-kicker">Verified State</p>
+              <h2 id="deployment-title">Deployment</h2>
+            </div>
+            <span class="state-pill" id="deployment-state">Checking</span>
+          </div>
+
+          <dl class="metadata-list" id="metadata-list">
+            <div>
+              <dt>Status</dt>
+              <dd id="metadata-status">Checking local metadata...</dd>
+            </div>
+          </dl>
+          <p class="hint">
+            The panel reads local deployment JSON from the app bundle when
+            present. Without metadata, it reports not deployed yet.
+          </p>
+        </aside>
+      </section>
+
+      <section class="results" aria-label="Processing results">
+        <article class="metric">
+          <span id="metric-total">0</span>
+          <p>Normalized contacts</p>
+        </article>
+        <article class="metric">
+          <span id="metric-unique">0</span>
+          <p>Unique hashes</p>
+        </article>
+        <article class="metric">
+          <span id="metric-matches">0</span>
+          <p>Local registry matches</p>
+        </article>
+      </section>
+
+      <section class="panel table-panel" aria-labelledby="table-title">
+        <div class="panel-header">
+          <div>
+            <p class="section-kicker">Output</p>
+            <h2 id="table-title">Local hash preview</h2>
+          </div>
+          <button class="ghost-button" type="button" id="copy-button" disabled>
+            Copy hashes
+          </button>
+        </div>
+
+        <div class="empty-state" id="empty-state">
+          Add contacts and process them to see normalized identifiers and
+          hashes.
+        </div>
+        <div class="table-wrap" id="table-wrap" hidden>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Normalized value</th>
+                <th scope="col">SHA-256 hash</th>
+                <th scope="col">Registry</th>
+              </tr>
+            </thead>
+            <tbody id="results-body"></tbody>
+          </table>
+        </div>
       </section>
     </main>
   </body>
