@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register Identifier</title>
+    <link rel="icon" href="/app/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/app/site.css" />
+    <script type="module" src="/app/wallet.js"></script>
+  </head>
+  <body>
+    <header class="nav">
+      <a class="brand" href="/app/"><span class="brand-mark">AC</span><span>Contact Discovery</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="/app/">Home</a>
+        <a href="/app/how-it-works.html">How it works</a>
+        <a href="/app/pages/discover-contacts.html">Discover</a>
+        <a href="/app/pages/view-matches.html">Matches</a>
+      </nav>
+      <button class="wallet-button" type="button" data-wallet-button>Connect wallet</button>
+    </header>
+
+    <main class="page-shell">
+      <section class="page-header">
+        <div>
+          <p class="eyebrow">Function 01</p>
+          <h1>Register a private identifier.</h1>
+          <p class="lede">Prepare the identifier your wallet would submit to the Arcium-backed registry.</p>
+        </div>
+      </section>
+
+      <section class="page-grid">
+        <form class="panel" id="register-form">
+          <label for="identifier">Email, phone, handle, or wallet alias</label>
+          <input id="identifier" autocomplete="off" placeholder="alice@example.com" />
+          <label for="label">Private label</label>
+          <input id="label" placeholder="Work contacts" />
+          <div class="page-actions">
+            <button class="action-button" type="submit">Prepare registration</button>
+            <button class="ghost-button" type="button" id="copy-hash">Copy hash</button>
+          </div>
+          <div class="output">
+            <table>
+              <tbody>
+                <tr><th>Normalized</th><td id="normalized">Waiting for input</td></tr>
+                <tr><th>SHA-256</th><td class="hash" id="hash">Waiting for input</td></tr>
+                <tr><th>Transaction</th><td>No verified transaction submitted yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+        <aside class="panel">
+          <p class="section-kicker">Verified state</p>
+          <h2 data-deployment-status>Checking metadata</h2>
+          <dl class="metadata-list">
+            <div><dt>Wallet</dt><dd data-wallet-address>Not connected</dd></div>
+            <div><dt>Program</dt><dd data-program-id>No local deployment JSON</dd></div>
+            <div><dt>Deploy tx</dt><dd data-deploy-tx>Unavailable</dd></div>
+          </dl>
+          <p data-verification-copy>No fake registry state is shown.</p>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module">
+      const form = document.querySelector("#register-form");
+      const identifier = document.querySelector("#identifier");
+      const normalized = document.querySelector("#normalized");
+      const hash = document.querySelector("#hash");
+      const copy = document.querySelector("#copy-hash");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const value = normalize(identifier.value);
+        normalized.textContent = value || "Invalid input";
+        hash.textContent = value ? await sha256(value) : "Waiting for input";
+      });
+
+      copy.addEventListener("click", async () => {
+        if (hash.textContent.length === 64) await navigator.clipboard.writeText(hash.textContent);
+      });
+
+      function normalize(value) {
+        const compact = value.trim().toLowerCase();
+        if (!compact) return "";
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(compact)) return compact;
+        const digits = compact.replace(/\D/g, "");
+        if (digits.length >= 7 && digits.length <= 15) return compact.trim().startsWith("+") ? `+${digits}` : digits;
+        return `@${compact.replace(/^@+/, "").replace(/\s+/g, "")}`;
+      }
+
+      async function sha256(value) {
+        const bytes = new TextEncoder().encode(value);
+        const digest = await crypto.subtle.digest("SHA-256", bytes);
+        return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+      }
+    </script>
+  </body>
+</html>

@@ -5,131 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Private contact discovery interface for Arcium encrypted matching."
+      content="Arcium private contact discovery with wallet connection, verified deployment state, and focused app pages."
     />
     <title>Arcium Contact Discovery</title>
     <link rel="icon" href="/app/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/app/styles.css" />
-    <script type="module" src="/app/main.js"></script>
+    <link rel="stylesheet" href="/app/site.css" />
+    <script type="module" src="/app/wallet.js"></script>
   </head>
   <body>
-    <main class="shell">
-      <section class="masthead" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">Arcium Private Set Intersection</p>
-          <h1 id="page-title">Contact discovery without address book exposure</h1>
-        </div>
-        <p class="lede">
-          Normalize identifiers in the browser, hash them locally, and compare
-          only hashed sets before encrypted on-chain computation is wired in.
-        </p>
-      </section>
+    <header class="nav">
+      <a class="brand" href="/app/">
+        <span class="brand-mark">AC</span>
+        <span>Contact Discovery</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="/app/how-it-works.html">How it works</a>
+        <a href="/app/pages/register-identifier.html">Register</a>
+        <a href="/app/pages/discover-contacts.html">Discover</a>
+        <a href="/app/pages/view-matches.html">Matches</a>
+      </nav>
+      <button class="wallet-button" type="button" data-wallet-button>
+        Connect wallet
+      </button>
+    </header>
 
-      <section class="workspace" aria-label="Contact discovery workspace">
-        <form class="panel input-panel" id="contact-form">
-          <div class="panel-header">
-            <div>
-              <p class="section-kicker">Input</p>
-              <h2>Your contacts</h2>
-            </div>
-            <button class="ghost-button" type="button" id="clear-button">
-              Clear
-            </button>
-          </div>
-
-          <label for="contact-input">Contacts to check</label>
-          <textarea
-            id="contact-input"
-            name="contacts"
-            rows="9"
-            spellcheck="false"
-            placeholder="alice@example.com&#10;+1 (415) 555-0132&#10;@sol_builder"
-          ></textarea>
-          <p class="hint">
-            Enter one email, phone number, handle, or wallet alias per line.
-            Processing stays in this browser session.
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Arcium private set intersection</p>
+          <h1>Find friends without uploading your address book.</h1>
+          <p class="lede">
+            Users keep contacts local, submit encrypted identifiers, and reveal
+            only verified matches when the Arcium program is deployed.
           </p>
-
-          <label for="registry-input">Known registered hashes</label>
-          <textarea
-            id="registry-input"
-            name="registry"
-            rows="5"
-            spellcheck="false"
-            placeholder="Paste SHA-256 hashes, one per line, to check local matches."
-          ></textarea>
-
-          <div class="form-actions">
-            <button type="submit" class="primary-button">Process contacts</button>
-            <span id="form-status" role="status" aria-live="polite"></span>
+          <div class="hero-actions">
+            <a class="primary-link" href="/app/pages/discover-contacts.html">
+              Open discovery
+            </a>
+            <a class="secondary-link" href="/app/how-it-works.html">
+              Read the flow
+            </a>
           </div>
-        </form>
-
-        <aside class="panel verified-panel" aria-labelledby="deployment-title">
-          <div class="state-row">
+        </div>
+        <aside class="verification-panel">
+          <p class="section-kicker">Verified deployment</p>
+          <h2 data-deployment-status>Checking metadata</h2>
+          <dl>
             <div>
-              <p class="section-kicker">Verified State</p>
-              <h2 id="deployment-title">Deployment</h2>
+              <dt>Wallet</dt>
+              <dd data-wallet-address>Not connected</dd>
             </div>
-            <span class="state-pill" id="deployment-state">Checking</span>
-          </div>
-
-          <dl class="metadata-list" id="metadata-list">
             <div>
-              <dt>Status</dt>
-              <dd id="metadata-status">Checking local metadata...</dd>
+              <dt>Program</dt>
+              <dd data-program-id>No local deployment JSON</dd>
+            </div>
+            <div>
+              <dt>Deploy tx</dt>
+              <dd data-deploy-tx>Unavailable</dd>
             </div>
           </dl>
-          <p class="hint">
-            The panel reads local deployment JSON from the app bundle when
-            present. Without metadata, it reports not deployed yet.
+          <p data-verification-copy>
+            The app only shows explorer-verifiable contract state when local
+            deployment metadata exists in the bundle.
           </p>
         </aside>
       </section>
 
-      <section class="results" aria-label="Processing results">
-        <article class="metric">
-          <span id="metric-total">0</span>
-          <p>Normalized contacts</p>
-        </article>
-        <article class="metric">
-          <span id="metric-unique">0</span>
-          <p>Unique hashes</p>
-        </article>
-        <article class="metric">
-          <span id="metric-matches">0</span>
-          <p>Local registry matches</p>
-        </article>
-      </section>
-
-      <section class="panel table-panel" aria-labelledby="table-title">
-        <div class="panel-header">
-          <div>
-            <p class="section-kicker">Output</p>
-            <h2 id="table-title">Local hash preview</h2>
-          </div>
-          <button class="ghost-button" type="button" id="copy-button" disabled>
-            Copy hashes
-          </button>
-        </div>
-
-        <div class="empty-state" id="empty-state">
-          Add contacts and process them to see normalized identifiers and
-          hashes.
-        </div>
-        <div class="table-wrap" id="table-wrap" hidden>
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Type</th>
-                <th scope="col">Normalized value</th>
-                <th scope="col">SHA-256 hash</th>
-                <th scope="col">Registry</th>
-              </tr>
-            </thead>
-            <tbody id="results-body"></tbody>
-          </table>
-        </div>
+      <section class="feature-grid" aria-label="Application pages">
+        <a class="feature-card" href="/app/pages/register-identifier.html">
+          <span>01</span>
+          <h2>Register Identifier</h2>
+          <p>Hash and prepare one private identifier for encrypted registration.</p>
+        </a>
+        <a class="feature-card" href="/app/pages/discover-contacts.html">
+          <span>02</span>
+          <h2>Discover Contacts</h2>
+          <p>Normalize an address book locally and prepare a match request.</p>
+        </a>
+        <a class="feature-card" href="/app/pages/view-matches.html">
+          <span>03</span>
+          <h2>View Matches</h2>
+          <p>Review result proofs, signatures, and explorer links when available.</p>
+        </a>
       </section>
     </main>
   </body>
