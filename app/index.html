@@ -1,1 +1,80 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="description" content="Private contact discovery on Arcium."/><title>Arcium Contact Discovery</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="/site.css"/><script src="/wallet.js" defer></script></head><body><main class="shell"><header class="topbar"><a class="brand" href="/"><span class="brand-mark">C</span><span>Contact Discovery</span></a><nav class="nav-links"><a href="/how-it-works.html">How it works</a><a href="/pages/register-identifier.html">Register</a><a href="/pages/discover-contacts.html">Discover</a><a href="/pages/view-matches.html">Matches</a><button class="wallet-trigger" type="button" data-wallet-connect>Connect wallet</button></nav></header><section class="hero"><div><p class="eyebrow">Private set intersection</p><h1>Find contacts without uploading your address book.</h1><p class="lede">Normalize locally, register commitments, submit encrypted discovery requests, and reveal only verified matches.</p><div class="cta-row"><a class="primary" href="/pages/register-identifier.html">Register identifier</a><a class="secondary" href="/pages/discover-contacts.html">Discover contacts</a></div></div><aside class="panel hero-card"><p class="eyebrow">Privacy onboarding</p><h2>Matches only. No non-match leak.</h2><p>The app is structured so raw contacts stay local and advanced verification details are hidden until needed.</p><div class="hero-card-grid"><div class="stat"><strong>Local</strong><span class="muted">Normalization and hashing</span></div><div class="stat"><strong>PSI</strong><span class="muted">Private set intersection target</span></div></div></aside></section><section class="grid"><a class="feature-card" href="/pages/register-identifier.html"><span>01</span><h2>Register</h2><p>Commit an identifier without exposing the raw value.</p></a><a class="feature-card" href="/pages/discover-contacts.html"><span>02</span><h2>Discover</h2><p>Prepare an encrypted contact set for matching.</p></a><a class="feature-card" href="/pages/view-matches.html"><span>03</span><h2>Matches</h2><p>Show only verified matches from computation output.</p></a></section></main></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Private contact discovery on Arcium." />
+    <title>Arcium Contact Discovery</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/site.css" />
+    <script src="/wallet.js" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="/"><span class="brand-mark">C</span><span>Contact Discovery</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/how-it-works.html">How it works</a>
+          <a href="/pages/register-identifier.html">Register</a>
+          <a href="/pages/discover-contacts.html">Discover</a>
+          <a href="/pages/view-matches.html">Matches</a>
+          <button class="wallet-trigger" type="button" data-wallet-connect>Connect wallet</button>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Private social graph</p>
+          <h1>Contact sync should reveal overlap, not your entire address book.</h1>
+          <p class="lede">
+            Contact Discovery now signs live identifier commitments and discovery requests, then matches
+            your local contact hashes against on-chain commitments without publishing the raw emails or
+            phone numbers back to the chain.
+          </p>
+          <div class="cta-row">
+            <a class="primary" href="/pages/register-identifier.html">Register an identifier</a>
+            <a class="secondary" href="/pages/view-matches.html">Load matches</a>
+          </div>
+        </div>
+        <aside class="panel hero-card">
+          <p class="eyebrow">Discovery rail</p>
+          <h2>Live commitments. Local matches.</h2>
+          <p>
+            The dapp writes the commitment and discovery request on-chain, then computes overlap in the
+            browser against the live commitment registry so the user sees results without exposing raw
+            contacts.
+          </p>
+          <div class="hero-card-grid">
+            <div class="stat"><strong>On-chain</strong><span class="muted">Commitment registry</span></div>
+            <div class="stat"><strong>Local</strong><span class="muted">Raw contacts and match view</span></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="editorial-band">
+        <article class="editorial-copy">
+          <p class="eyebrow">Discovery reading</p>
+          <h2>Matching should be useful without becoming surveillance.</h2>
+          <p class="lede">
+            This flow is designed for social apps, invite graphs, and private onboarding where overlap is
+            the only thing the product needs to reveal.
+          </p>
+        </article>
+        <article class="route-list">
+          <p class="eyebrow">Route map</p>
+          <ol>
+            <li>Register a hashed identifier and mint a live commitment account.</li>
+            <li>Submit a discovery request that links your local set to the program.</li>
+            <li>Load matches by comparing local hashes against live global commitments.</li>
+          </ol>
+        </article>
+      </section>
+
+      <section class="grid" aria-label="Contact functions">
+        <a class="feature-card" href="/pages/register-identifier.html"><span>01</span><h2>Register</h2><p>Write the commitment on-chain without exposing the raw identifier.</p></a>
+        <a class="feature-card" href="/pages/discover-contacts.html"><span>02</span><h2>Discover</h2><p>Publish the discovery request while keeping the source list local.</p></a>
+        <a class="feature-card" href="/pages/view-matches.html"><span>03</span><h2>Matches</h2><p>Load overlap from live commitments without echoing the raw contact list.</p></a>
+      </section>
+    </main>
+  </body>
+</html>

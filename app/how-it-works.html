@@ -1,1 +1,42 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>How Contact Discovery Works</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="/site.css"/><script src="/wallet.js" defer></script></head><body><main class="shell"><header class="topbar"><a class="brand" href="/"><span class="brand-mark">C</span><span>Contact Discovery</span></a><nav class="nav-links"><a href="/pages/register-identifier.html">Register</a><a href="/pages/discover-contacts.html">Discover</a><a href="/pages/view-matches.html">Matches</a><button class="wallet-trigger" type="button" data-wallet-connect>Connect wallet</button></nav></header><section class="page-head"><p class="eyebrow">How it works</p><h1>Only overlapping contacts should be revealed.</h1><p class="lede">The browser normalizes and hashes identifiers locally. Arcium is used for the private set intersection path so non-matches are not leaked.</p></section><section class="grid"><article class="feature-card"><span>01</span><h2>Normalize locally</h2><p>Email, phone, handle, and wallet alias inputs are cleaned in the browser.</p></article><article class="feature-card"><span>02</span><h2>Commit privately</h2><p>Only commitments and encrypted request data should reach the program.</p></article><article class="feature-card"><span>03</span><h2>Reveal matches</h2><p>Result pages show matches only after verified callback output exists.</p></article></section></main></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How Contact Discovery Works</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/site.css" />
+    <script src="/wallet.js" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="/"><span class="brand-mark">C</span><span>Contact Discovery</span></a>
+        <nav class="nav-links"><a href="/pages/register-identifier.html">Register</a><a href="/pages/discover-contacts.html">Discover</a><a href="/pages/view-matches.html">Matches</a><button class="wallet-trigger" type="button" data-wallet-connect>Connect wallet</button></nav>
+      </header>
+      <section class="page-head">
+        <p class="eyebrow">How it works</p>
+        <h1>The chain stores the commitment. The browser keeps the person.</h1>
+        <p class="lede">Identifiers are normalized and hashed before the live account is written. Discovery then compares local contact hashes against the on-chain registry, which means the raw email or phone number never needs to come back from Solana.</p>
+      </section>
+      <section class="editorial-band">
+        <article class="editorial-copy">
+          <p class="eyebrow">Operating logic</p>
+          <ol class="step-list">
+            <li>Register an identifier commitment on the deployed program.</li>
+            <li>Submit a discovery request tied to your wallet.</li>
+            <li>Load overlap by comparing your local contact hashes with live global commitments.</li>
+          </ol>
+        </article>
+        <article class="route-list">
+          <p class="eyebrow">Privacy boundary</p>
+          <ol>
+            <li>The commitment account is public and verifiable.</li>
+            <li>The raw email, phone number, and address book stay local.</li>
+            <li>The result page reveals overlap only, which is the piece the user actually needs.</li>
+          </ol>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
